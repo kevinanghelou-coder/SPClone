@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SPClone</string>
+    <string name="title_activity_realtime_database">RealtimeDatabase</string>
+</resources>
