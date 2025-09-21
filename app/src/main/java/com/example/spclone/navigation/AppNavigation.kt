@@ -42,12 +42,14 @@ fun AppNavigation(modifier: Modifier = Modifier) {
                 onRegisterSuccess = {
                     isLoggedIn = true
                     navController.navigate("home") {
-                        popUpTo("register") { inclusive = true }
+                        popUpTo(0)
+                        launchSingleTop = true
                     }
                 },
                 onNavigateToLogin = {
                     navController.navigate("login") {
                         popUpTo("register") { inclusive = true }
+                        launchSingleTop = true
                     }
                 }
             )

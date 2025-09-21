@@ -99,14 +99,28 @@ fun RegisterScreen(
                                             .set(userMap)
                                             .addOnSuccessListener {
                                                 errorMessage = null
-                                                onRegisterSuccess()
+                                                onRegisterSuccess() // 🚀 Ir al Home
                                             }
                                             .addOnFailureListener { e ->
                                                 errorMessage = "Error al guardar en Firestore: ${e.message}"
                                             }
                                     }
                                 } else {
-                                    errorMessage = "Error: ${task.exception?.message}"
+                                    // Si el correo ya existe, intentamos login
+                                    if (task.exception?.message?.contains("already in use") == true) {
+                                        FirebaseAuth.getInstance()
+                                            .signInWithEmailAndPassword(email, password)
+                                            .addOnCompleteListener { loginTask ->
+                                                if (loginTask.isSuccessful) {
+                                                    errorMessage = null
+                                                    onRegisterSuccess()
+                                                } else {
+                                                    errorMessage = "Error: ${loginTask.exception?.message}"
+                                                }
+                                            }
+                                    } else {
+                                        errorMessage = "Error: ${task.exception?.message}"
+                                    }
                                 }
                             }
                     } else {
